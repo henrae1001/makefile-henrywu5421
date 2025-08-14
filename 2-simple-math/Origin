@@ -1,0 +1,47 @@
+.PHONY: all clean help area sqrt log
+
+CC := gcc
+CFLAGS := -Wall -Wextra -g
+SOURCES := $(wildcard *.c)
+
+# Generate program names and targets
+OBJECTS := $(SOURCES:.c=.o)
+TARGETS := $(SOURCES:.c=.out)
+PROGRAMS := $(SOURCES:.c=)
+
+# Default target => input make will run make all
+all: $(TARGETS)
+
+# Pattern rules for compilation
+# Compile C source to object file
+$(OBJECTS): %.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Link object file to executable
+$(TARGETS): %.out: %.o
+	$(CC) $< -o $@ -lm
+
+# Generic rule for running programs
+# This allows 'make area' to work with 'area.out'
+$(PROGRAMS): %: %.out
+	@./$<
+
+# Clean target and remove generated files
+clean:
+	@echo "Cleaning up generated files"
+	@rm -f $(TARGETS) $(OBJECTS)
+	@echo "Done."
+
+# Help target
+help:
+	@echo "Available targets:"
+	@echo "  all   - Build all executables"
+	@echo "  clean - Remove generated files (.out and .o)"
+	@echo "  help  - Show this help message"
+	@echo "  area  - Build & run the area.out executable"
+	@echo "  sqrt  - Build & run the sqrt.out executable"  
+	@echo "  log   - Build & run the log.out executable"
+	@echo ""
+	@echo "Source files: $(SOURCES)"
+	@echo "Object files: $(OBJECTS)"
+	@echo "Executables: $(TARGETS)"

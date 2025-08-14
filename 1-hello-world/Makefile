@@ -17,14 +17,16 @@ hello.o: hello.c
 	$(CC) $(CFLAGS) -c hello.c
 
 run: hello.out
-	./hello.out
+	@./hello.out
+# ./ = current directory
+# @ can suppress the command output
 
 # rm -f => $(RM)
 clean:
 	rm -f hello.o hello.out
 
 help:
-	@echo " These are available targets:"
+	@echo " Available targets:"
 	@echo " make all   - Build hello.out from hello.c"
 	@echo " make run   - Run the hello.out executable"
 	@echo " make clean - Remove generated object files and executable"
